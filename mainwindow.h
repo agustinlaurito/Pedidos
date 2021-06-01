@@ -59,6 +59,8 @@ private slots:
 
     void on_btn_cambiotab_clicked();
 
+    void on_btn_help_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "ayuda.h"
 
 
 #define NUMERO 0
@@ -404,4 +405,11 @@ void MainWindow::on_check_scroll_toggled(bool checked)
 void MainWindow::on_btn_cambiotab_clicked()
 {
     ui->tabWidget->setCurrentIndex(1);
+}
+
+void MainWindow::on_btn_help_clicked()
+{
+    ayuda Abrir_Ayuda;
+    Abrir_Ayuda.setModal(true);
+    Abrir_Ayuda.exec();
 }

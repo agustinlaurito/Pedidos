@@ -17,6 +17,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QWidget>
 
@@ -60,6 +61,7 @@ public:
     QCheckBox *check_remitir;
     QCheckBox *check_scroll;
     QLabel *lbl_cantpedidos;
+    QPushButton *btn_help;
     QWidget *General;
 
     void setupUi(QMainWindow *MainWindow)
@@ -99,7 +101,7 @@ public:
 "}"));
         lbl_cantpedidos_2 = new QLabel(Pedidos);
         lbl_cantpedidos_2->setObjectName(QString::fromUtf8("lbl_cantpedidos_2"));
-        lbl_cantpedidos_2->setGeometry(QRect(1550, 990, 61, 31));
+        lbl_cantpedidos_2->setGeometry(QRect(1480, 990, 61, 31));
         QFont font1;
         font1.setFamily(QString::fromUtf8("Quicksand"));
         font1.setPointSize(16);
@@ -322,7 +324,7 @@ public:
         lbl_reqsin->setScaledContents(true);
         lbl_vistoaremitir = new QLabel(groupBox);
         lbl_vistoaremitir->setObjectName(QString::fromUtf8("lbl_vistoaremitir"));
-        lbl_vistoaremitir->setGeometry(QRect(910, 190, 71, 21));
+        lbl_vistoaremitir->setGeometry(QRect(900, 190, 91, 21));
         lbl_vistoaremitir->setFont(font1);
         check_remitir = new QCheckBox(groupBox);
         check_remitir->setObjectName(QString::fromUtf8("check_remitir"));
@@ -338,7 +340,7 @@ public:
 "}"));
         check_scroll = new QCheckBox(Pedidos);
         check_scroll->setObjectName(QString::fromUtf8("check_scroll"));
-        check_scroll->setGeometry(QRect(1610, 990, 41, 31));
+        check_scroll->setGeometry(QRect(1550, 990, 41, 31));
         check_scroll->setStyleSheet(QString::fromUtf8("QCheckBox::indicator {width:37px;height: 27px;}\n"
 "QCheckBox::indicator:checked\n"
 "{\n"
@@ -351,8 +353,16 @@ public:
         check_scroll->setChecked(true);
         lbl_cantpedidos = new QLabel(Pedidos);
         lbl_cantpedidos->setObjectName(QString::fromUtf8("lbl_cantpedidos"));
-        lbl_cantpedidos->setGeometry(QRect(1280, 990, 251, 31));
+        lbl_cantpedidos->setGeometry(QRect(1220, 990, 251, 31));
         lbl_cantpedidos->setFont(font1);
+        btn_help = new QPushButton(Pedidos);
+        btn_help->setObjectName(QString::fromUtf8("btn_help"));
+        btn_help->setGeometry(QRect(1610, 980, 51, 51));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/help.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_help->setIcon(icon1);
+        btn_help->setIconSize(QSize(500, 36));
+        btn_help->setFlat(true);
         tabWidget->addTab(Pedidos, QString());
         General = new QWidget();
         General->setObjectName(QString::fromUtf8("General"));
@@ -395,10 +405,11 @@ public:
         lbl_numerofactura->setText(QApplication::translate("MainWindow", "1124554", nullptr));
         lbl_pagorechazado->setText(QString());
         lbl_reqsin->setText(QString());
-        lbl_vistoaremitir->setText(QApplication::translate("MainWindow", "Remitir", nullptr));
+        lbl_vistoaremitir->setText(QApplication::translate("MainWindow", "Remitible", nullptr));
         check_remitir->setText(QString());
         check_scroll->setText(QString());
         lbl_cantpedidos->setText(QApplication::translate("MainWindow", "Pedidos Pendientes:", nullptr));
+        btn_help->setText(QString());
         tabWidget->setTabText(tabWidget->indexOf(Pedidos), QApplication::translate("MainWindow", "Pedidos", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(General), QApplication::translate("MainWindow", "Requerimientos", nullptr));
     } // retranslateUi
