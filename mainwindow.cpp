@@ -13,7 +13,9 @@
 #define REQUERIMIENTOESTADO 5
 #define FACTURANUMERO 6
 #define ESTADOFACTURA 7
+#define PEDIDOPRIORIDAD 8
 
+//Hola
 int numero_fila = 0;
 QStringList pedido[100];
 QStringList items[100];
@@ -42,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listcant->setItemAlignment(Qt::AlignCenter);
     ui->listWidget->verticalScrollBar()->setStyleSheet("QScrollBar:vertical {border: none;background:white;width:3px;margin: 0px 0px 0px 0px;}QScrollBar::handle:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130), stop:1 rgb(32, 47, 130));min-height: 0px;}QScrollBar::add-line:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));height: 0px;subcontrol-position: bottom;subcontrol-origin: margin;}QScrollBar::sub-line:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));height: 0 px;subcontrol-position: top;subcontrol-origin: margin;}");
     ui->listdesc->verticalScrollBar()->setStyleSheet("QScrollBar:vertical {border: none;background:white;width:3px;margin: 0px 0px 0px 0px;}QScrollBar::handle:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130), stop:1 rgb(32, 47, 130));min-height: 0px;}QScrollBar::add-line:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));height: 0px;subcontrol-position: bottom;subcontrol-origin: margin;}QScrollBar::sub-line:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));height: 0 px;subcontrol-position: top;subcontrol-origin: margin;}");
-    ui->listdesc->horizontalScrollBar()->setStyleSheet("QScrollBar:horizontal {border: none;background:white;height:3px;margin: 0px 0px 0px 0px;}QScrollBar::handle:horizontal {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130), stop:1 rgb(32, 47, 130));min-width: 0px;}QScrollBar::add-line:horizontal {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));width: 0px;subcontrol-position: right;subcontrol-origin: margin;}QScrollBar::sub-line:horizontal {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));width: 0 px;subcontrol-position: left;subcontrol-origin: margin;}");
+    //ui->listdesc->horizontalScrollBar()->setStyleSheet("QScrollBar:horizontal {border: none;background:white;height:3px;margin: 0px 0px 0px 0px;}QScrollBar::handle:horizontal {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130), stop:1 rgb(32, 47, 130));min-width: 0px;}QScrollBar::add-line:horizontal {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));width: 0px;subcontrol-position: right;subcontrol-origin: margin;}QScrollBar::sub-line:horizontal {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));width: 0 px;subcontrol-position: left;subcontrol-origin: margin;}");
     ui->label_pic_entrega->hide();
     ui->label_pic_retira->hide();
     ui->label_pic_advertencia->hide();
@@ -60,11 +62,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lbl_cantpedidos->setText("Pedidos Pendientes : " + QString::number(ui->listWidget->count()));
 
 
+
 //-------------------------------------------------------------//
-
-
-
-
 }
 
 
@@ -96,6 +95,9 @@ void MainWindow::burocratizar(int x){   //Funcion encargada de formatear los ite
             item->setText(pedido[x][EMPRESA]);
         }
     }
+
+
+
 
 //----------------------------------- Habiendo seteado el texto y color, procedo a agregarle el icono de estado del requerimiento y de la factura ---------------//
 
@@ -140,10 +142,17 @@ void MainWindow::burocratizar(int x){   //Funcion encargada de formatear los ite
 
 //----------------------------------- Por ultimo, muestro el item y lo seteo como creado ------------------------------------------------------------------------//
     //item->setTextAlignment(Qt::AlignmentFlag::AlignHCenter);
+    if(pedido[x][PEDIDOPRIORIDAD].toInt() == 1){
+        item->setTextColor(QColor(255,10,10));
+    }
+    if(pedido[x][PEDIDOPRIORIDAD].toInt() == 2){
+        item->setTextColor(QColor(255,195,117));
+    }
+
     ui->listWidget->addItem(item);
     ini->beginGroup(pedido[x][NUMERO]);
     ini->setValue("Creado",1);
-
+    ini->setValue("Prioridad",pedido[x][PEDIDOPRIORIDAD]);
     ini->endGroup();
 
 
@@ -259,6 +268,32 @@ void MainWindow::Busca_Escribe(int fila){
     }else{
        // ui->lbl_pagoerror->show();
     }
+
+   int prioridad =  pedido[fila][PEDIDOPRIORIDAD].toInt();
+    switch (prioridad){
+        default:
+        case 3: //Prioridad Normal
+            //ui->lbl_empresa->setStyleSheet("background:#F2F2F2;border-radius: 10px;");
+            //ui->lbl_numero->setStyleSheet("background:#F2F2F2;border-radius: 10px;");
+            //ui->lbl_numerofactura->setStyleSheet("background:#F2F2F2;border-radius: 10px;");
+            //ui->A_Grupo1->setStyleSheet("background:#F2F2F2;border-radius: 10px;");
+            ui->groupBox->setStyleSheet("background:#FFFFFF;border-radius: 10px;");
+            break;
+        case 1: //Urgente
+            //ui->lbl_empresa->setStyleSheet("background:#FF8789;border-radius: 10px;");
+            //ui->lbl_numero->setStyleSheet("background:#FF8789;border-radius: 10px;");
+            //ui->lbl_numerofactura->setStyleSheet("background:#FF8789;border-radius: 10px;");
+            ui->groupBox->setStyleSheet("background:#FF8789;border-radius: 10px;");
+            break;
+        case 2: //Prioridad Alta
+            //ui->lbl_empresa->setStyleSheet("background:#FFC575;border-radius: 10px;");
+            //ui->lbl_numero->setStyleSheet("background:#FFC575;border-radius: 10px;");
+            //ui->lbl_numerofactura->setStyleSheet("background:#FFC575;border-radius: 10px;");
+            //ui->A_Grupo1->setStyleSheet("background:#FFC575;border-radius: 10px;");
+             ui->groupBox->setStyleSheet("background:#FFC575;border-radius: 10px;");
+            break;
+    }
+
 //------------------------ Items ------------------//
     int currentrow = fila;
     QString labelproducto = "";
@@ -355,7 +390,8 @@ void MainWindow::on_check_visto_clicked()
 
     if(itemactual.contains("[NUEVO]")){
         ui->listWidget->currentItem()->setText(itemactual.remove("[NUEVO]"));
-        ui->listWidget->currentItem()->setTextColor(QColor(0,0,0));
+        if(pedido[ui->listWidget->currentRow()][PEDIDOPRIORIDAD].toInt() != 3)
+            ui->listWidget->currentItem()->setTextColor(QColor(0,0,0));
     }
 }
 

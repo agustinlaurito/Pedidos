@@ -621,25 +621,7 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/qbasictimer.h \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/QSettings \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/qsettings.h \
-		ui_mainwindow.h \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtGui/QIcon \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QApplication \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qapplication.h \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/qcoreapplication.h \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/qeventloop.h \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qdesktopwidget.h \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtGui/qguiapplication.h \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtGui/qinputmethod.h \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QCheckBox \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qcheckbox.h \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qabstractbutton.h \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QGroupBox \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qgroupbox.h \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QLabel \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qlabel.h \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QListWidget \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QTabWidget \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QWidget
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o mainwindow.cpp
 
 release/moc_mainwindow.o: release/moc_mainwindow.cpp 

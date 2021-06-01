@@ -50,7 +50,6 @@ public:
     QLabel *lbl_retira;
     QLabel *lbl_pendiente;
     QLabel *lbl_completo;
-    QLabel *flecha;
     QLabel *lbl_pagopendiente;
     QLabel *lbl_pagorealizado;
     QLabel *lbl_pagoerror;
@@ -112,7 +111,7 @@ public:
         Acqualogo->setScaledContents(true);
         listWidget = new QListWidget(Pedidos);
         listWidget->setObjectName(QString::fromUtf8("listWidget"));
-        listWidget->setGeometry(QRect(40, 40, 671, 971));
+        listWidget->setGeometry(QRect(40, 40, 671, 931));
         QFont font2;
         font2.setFamily(QString::fromUtf8("Quicksand"));
         font2.setPointSize(22);
@@ -132,9 +131,8 @@ public:
         listWidget->setTextElideMode(Qt::ElideMiddle);
         groupBox = new QGroupBox(Pedidos);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        groupBox->setGeometry(QRect(720, 10, 1511, 971));
-        groupBox->setStyleSheet(QString::fromUtf8("border: 0px;\n"
-""));
+        groupBox->setGeometry(QRect(720, 40, 1221, 931));
+        groupBox->setStyleSheet(QString::fromUtf8("border: 0px;"));
         A_Grupo2 = new QGroupBox(groupBox);
         A_Grupo2->setObjectName(QString::fromUtf8("A_Grupo2"));
         A_Grupo2->setGeometry(QRect(10, 20, 1211, 101));
@@ -142,20 +140,20 @@ public:
         A_Grupo2->setFlat(false);
         lbl_numero = new QLabel(A_Grupo2);
         lbl_numero->setObjectName(QString::fromUtf8("lbl_numero"));
-        lbl_numero->setGeometry(QRect(0, 10, 161, 81));
+        lbl_numero->setGeometry(QRect(0, 0, 161, 81));
         QFont font3;
         font3.setFamily(QString::fromUtf8("Quicksand"));
         font3.setPointSize(36);
         font3.setBold(false);
         font3.setWeight(50);
         lbl_numero->setFont(font3);
-        lbl_numero->setStyleSheet(QString::fromUtf8("background: #F2F2F2;\n"
+        lbl_numero->setStyleSheet(QString::fromUtf8("background:#F2F2F2;\n"
 "border-radius: 10px;"));
         lbl_numero->setFrameShape(QFrame::NoFrame);
         lbl_numero->setAlignment(Qt::AlignCenter);
         lbl_empresa = new QLabel(A_Grupo2);
         lbl_empresa->setObjectName(QString::fromUtf8("lbl_empresa"));
-        lbl_empresa->setGeometry(QRect(200, 10, 931, 81));
+        lbl_empresa->setGeometry(QRect(200, 0, 931, 81));
         lbl_empresa->setFont(font3);
         lbl_empresa->setStyleSheet(QString::fromUtf8("background: #F2F2F2;\n"
 "border-radius: 10px;"));
@@ -212,10 +210,15 @@ public:
         descripcion->setAlignment(Qt::AlignCenter);
         listdesc = new QListWidget(groupBox);
         listdesc->setObjectName(QString::fromUtf8("listdesc"));
-        listdesc->setGeometry(QRect(90, 360, 1121, 601));
+        listdesc->setGeometry(QRect(90, 360, 1121, 561));
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(listdesc->sizePolicy().hasHeightForWidth());
+        listdesc->setSizePolicy(sizePolicy);
         QFont font6;
         font6.setFamily(QString::fromUtf8("Quicksand"));
-        font6.setPointSize(14);
+        font6.setPointSize(18);
         listdesc->setFont(font6);
         listdesc->setStyleSheet(QString::fromUtf8("background: #F2F2F2;\n"
 "border-radius: 10px;\n"
@@ -227,9 +230,6 @@ public:
         lbl_entrega = new QLabel(groupBox);
         lbl_entrega->setObjectName(QString::fromUtf8("lbl_entrega"));
         lbl_entrega->setGeometry(QRect(160, 240, 1071, 81));
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(lbl_entrega->sizePolicy().hasHeightForWidth());
         lbl_entrega->setSizePolicy(sizePolicy);
         QFont font7;
@@ -251,11 +251,11 @@ public:
         label_pic_entrega->setScaledContents(true);
         listcant = new QListWidget(groupBox);
         listcant->setObjectName(QString::fromUtf8("listcant"));
-        listcant->setGeometry(QRect(20, 360, 61, 601));
+        listcant->setGeometry(QRect(20, 360, 61, 561));
         listcant->setFont(font6);
         listcant->setStyleSheet(QString::fromUtf8("background:#F2F2F2;\n"
 "border-radius: 10px;\n"
-"padding: 8px;"));
+"padding: 10px;"));
         listcant->setFrameShadow(QFrame::Raised);
         listcant->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         listcant->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -287,29 +287,24 @@ public:
         lbl_completo->setGeometry(QRect(410, 140, 61, 61));
         lbl_completo->setPixmap(QPixmap(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/verificado.png")));
         lbl_completo->setScaledContents(true);
-        flecha = new QLabel(groupBox);
-        flecha->setObjectName(QString::fromUtf8("flecha"));
-        flecha->setGeometry(QRect(480, 150, 41, 41));
-        flecha->setPixmap(QPixmap(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/right-arrow (2).png")));
-        flecha->setScaledContents(true);
         lbl_pagopendiente = new QLabel(groupBox);
         lbl_pagopendiente->setObjectName(QString::fromUtf8("lbl_pagopendiente"));
-        lbl_pagopendiente->setGeometry(QRect(520, 140, 71, 61));
+        lbl_pagopendiente->setGeometry(QRect(500, 140, 71, 61));
         lbl_pagopendiente->setPixmap(QPixmap(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/pago_pendien.png")));
         lbl_pagopendiente->setScaledContents(true);
         lbl_pagorealizado = new QLabel(groupBox);
         lbl_pagorealizado->setObjectName(QString::fromUtf8("lbl_pagorealizado"));
-        lbl_pagorealizado->setGeometry(QRect(520, 140, 71, 61));
+        lbl_pagorealizado->setGeometry(QRect(500, 140, 71, 61));
         lbl_pagorealizado->setPixmap(QPixmap(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/pago_check.png")));
         lbl_pagorealizado->setScaledContents(true);
         lbl_pagoerror = new QLabel(groupBox);
         lbl_pagoerror->setObjectName(QString::fromUtf8("lbl_pagoerror"));
-        lbl_pagoerror->setGeometry(QRect(530, 140, 51, 51));
+        lbl_pagoerror->setGeometry(QRect(500, 140, 51, 51));
         lbl_pagoerror->setPixmap(QPixmap(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/pago_no_existente.png")));
         lbl_pagoerror->setScaledContents(true);
         lbl_numerofactura = new QLabel(groupBox);
         lbl_numerofactura->setObjectName(QString::fromUtf8("lbl_numerofactura"));
-        lbl_numerofactura->setGeometry(QRect(980, 140, 241, 51));
+        lbl_numerofactura->setGeometry(QRect(980, 140, 231, 51));
         lbl_numerofactura->setFont(font2);
         lbl_numerofactura->setStyleSheet(QString::fromUtf8("border-radius: 10px;\n"
 "background: #F2F2F2;\n"
@@ -317,12 +312,12 @@ public:
         lbl_numerofactura->setAlignment(Qt::AlignCenter);
         lbl_pagorechazado = new QLabel(groupBox);
         lbl_pagorechazado->setObjectName(QString::fromUtf8("lbl_pagorechazado"));
-        lbl_pagorechazado->setGeometry(QRect(520, 140, 71, 61));
+        lbl_pagorechazado->setGeometry(QRect(500, 140, 71, 61));
         lbl_pagorechazado->setPixmap(QPixmap(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/pago_rechazdo.png")));
         lbl_pagorechazado->setScaledContents(true);
         lbl_reqsin = new QLabel(groupBox);
         lbl_reqsin->setObjectName(QString::fromUtf8("lbl_reqsin"));
-        lbl_reqsin->setGeometry(QRect(410, 140, 51, 51));
+        lbl_reqsin->setGeometry(QRect(410, 140, 61, 61));
         lbl_reqsin->setPixmap(QPixmap(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/sinrequerimiento.png")));
         lbl_reqsin->setScaledContents(true);
         lbl_vistoaremitir = new QLabel(groupBox);
@@ -394,7 +389,6 @@ public:
         lbl_retira->setText(QApplication::translate("MainWindow", "Retira", nullptr));
         lbl_pendiente->setText(QString());
         lbl_completo->setText(QString());
-        flecha->setText(QString());
         lbl_pagopendiente->setText(QString());
         lbl_pagorealizado->setText(QString());
         lbl_pagoerror->setText(QString());
