@@ -16,7 +16,7 @@
 #define ESTADOFACTURA 7
 #define PEDIDOPRIORIDAD 8
 
-//Hola
+
 int numero_fila = 0;
 QStringList pedido[100];
 QStringList items[100];
@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     popular_pedidos();
     popular_items();
+    ui->listWidget->setCurrentRow(0);
     QTimer *cronometro=new QTimer(this);
     connect(cronometro, SIGNAL(timeout()), this, SLOT(funcionActivacionTimer()));
     cronometro->start(10000);
@@ -39,9 +40,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     //ini->setValue("Test", "data");
 //------------------------------------------------------------//
-
+    //item->setTextAlignment(Qt::AlignmentFlag::AlignHCenter);
     ui->listWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    ui->listdesc->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+    //ui->listdesc->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->listcant->setItemAlignment(Qt::AlignCenter);
     ui->listWidget->verticalScrollBar()->setStyleSheet("QScrollBar:vertical {border: none;background:white;width:3px;margin: 0px 0px 0px 0px;}QScrollBar::handle:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130), stop:1 rgb(32, 47, 130));min-height: 0px;}QScrollBar::add-line:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));height: 0px;subcontrol-position: bottom;subcontrol-origin: margin;}QScrollBar::sub-line:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));height: 0 px;subcontrol-position: top;subcontrol-origin: margin;}");
     ui->listdesc->verticalScrollBar()->setStyleSheet("QScrollBar:vertical {border: none;background:white;width:3px;margin: 0px 0px 0px 0px;}QScrollBar::handle:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130), stop:1 rgb(32, 47, 130));min-height: 0px;}QScrollBar::add-line:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));height: 0px;subcontrol-position: bottom;subcontrol-origin: margin;}QScrollBar::sub-line:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));height: 0 px;subcontrol-position: top;subcontrol-origin: margin;}");
@@ -108,14 +109,14 @@ void MainWindow::burocratizar(int x){   //Funcion encargada de formatear los ite
     int facturanumero = pedido[x][FACTURANUMERO].toInt();
 
     if(requerimiento == 0){
-        if(!facturanumero)
-            item->setIcon(QIcon("\\\\servidor\\Users\\Public\\Acquatron Compartida\\Andones\\Resources\\icons\\REQinexistente_PAGOinexistente.png"));
-        if(estadofactura > 1)
-            item->setIcon(QIcon("\\\\servidor\\Users\\Public\\Acquatron Compartida\\Andones\\Resources\\icons\\REQinexistente_PAGOrechazado.png"));
-        if(estadofactura == 1)
-            item->setIcon(QIcon("\\\\servidor\\Users\\Public\\Acquatron Compartida\\Andones\\Resources\\icons\\REQinexistente_PAGOcheck.png"));
-        if(estadofactura == 0 and facturanumero)
-            item->setIcon(QIcon("\\\\servidor\\Users\\Public\\Acquatron Compartida\\Andones\\Resources\\icons\\REQinexistente_PAGOpendiente.png"));
+            if(!facturanumero)
+                item->setIcon(QIcon("\\\\servidor\\Users\\Public\\Acquatron Compartida\\Andones\\Resources\\icons\\REQinexistente_PAGOinexistente.png"));
+            if(estadofactura > 1)
+                item->setIcon(QIcon("\\\\servidor\\Users\\Public\\Acquatron Compartida\\Andones\\Resources\\icons\\REQinexistente_PAGOrechazado.png"));
+            if(estadofactura == 1)
+                item->setIcon(QIcon("\\\\servidor\\Users\\Public\\Acquatron Compartida\\Andones\\Resources\\icons\\REQinexistente_PAGOcheck.png"));
+            if(estadofactura == 0 and facturanumero)
+                item->setIcon(QIcon("\\\\servidor\\Users\\Public\\Acquatron Compartida\\Andones\\Resources\\icons\\REQinexistente_PAGOpendiente.png"));
     }
     if(requerimientoestado == 0 and requerimiento){
         if(!facturanumero)
@@ -205,6 +206,8 @@ QFile pedidos_items_txt("\\\\servidor\\Users\\Public\\Acquatron Compartida\\Ando
 
 
 void MainWindow::Busca_Escribe(int fila){
+
+    bool hayreq;
 //---------------------------- Pedidos --------------//
    // qDebug() << fila;
     ui->lbl_numero->setText(pedido[fila][NUMERO]);
@@ -221,13 +224,17 @@ void MainWindow::Busca_Escribe(int fila){
     ui->lbl_pagopendiente->hide();
     ui->lbl_reqsin->hide();
     ui->lbl_pagorechazado->hide();
+    ui->lbl_constock->hide();
+    //ui->lbl_constock->hide();
+
 
     int requerimiento = pedido[fila][REQUERIMIENTO].toInt();
     if(requerimiento == 0){
         ui->lbl_requerimiento->setText("Sin requerimiento") ;
-        ui->lbl_reqsin->show();
+        //ui->lbl_reqsin->show();
+        hayreq = false;
     }else{
-
+        hayreq = true;
         ui->lbl_requerimiento->setText("Requerimiento: " + pedido[fila][REQUERIMIENTO]);
         if(pedido[fila][REQUERIMIENTOESTADO].toInt() == 1){
             ui->lbl_completo->show();
@@ -274,50 +281,59 @@ void MainWindow::Busca_Escribe(int fila){
     switch (prioridad){
         default:
         case 3: //Prioridad Normal
-            //ui->lbl_empresa->setStyleSheet("background:#F2F2F2;border-radius: 10px;");
-            //ui->lbl_numero->setStyleSheet("background:#F2F2F2;border-radius: 10px;");
-            //ui->lbl_numerofactura->setStyleSheet("background:#F2F2F2;border-radius: 10px;");
-            //ui->A_Grupo1->setStyleSheet("background:#F2F2F2;border-radius: 10px;");
-            ui->groupBox->setStyleSheet("background:#FFFFFF;border-radius: 10px;");
+            ui->groupBox->setStyleSheet("background:#9fdef5;border-radius: 10px;");
             break;
         case 1: //Urgente
-            //ui->lbl_empresa->setStyleSheet("background:#FF8789;border-radius: 10px;");
-            //ui->lbl_numero->setStyleSheet("background:#FF8789;border-radius: 10px;");
-            //ui->lbl_numerofactura->setStyleSheet("background:#FF8789;border-radius: 10px;");
             ui->groupBox->setStyleSheet("background:#FF8789;border-radius: 10px;");
             break;
         case 2: //Prioridad Alta
-            //ui->lbl_empresa->setStyleSheet("background:#FFC575;border-radius: 10px;");
-            //ui->lbl_numero->setStyleSheet("background:#FFC575;border-radius: 10px;");
-            //ui->lbl_numerofactura->setStyleSheet("background:#FFC575;border-radius: 10px;");
-            //ui->A_Grupo1->setStyleSheet("background:#FFC575;border-radius: 10px;");
              ui->groupBox->setStyleSheet("background:#FFC575;border-radius: 10px;");
             break;
     }
 
 //------------------------ Items ------------------//
     int currentrow = fila;
+    bool senecesitareq = false;
     QString labelproducto = "";
     QString labelcant = "";
     int a = 0;
     //qDebug << items[currentrow].size();
     foreach(QString v,items[currentrow]){
+        int req;
 
-        //------ 4A Pendiente de la recta. Variando la O.O se obtienen distintos parametros. 0 -> Pedidonro 1 -> Cantidad 2-> Codigo 3-> Descripcion//
+        //------ n*A Pendiente de la recta. "n" refiere al numero de items dentro de la consulta. Variando la O.O se obtienen distintos parametros. 0 -> Pedidonro 1 -> Cantidad 2-> Codigo 3-> Descripcion Stock ->4//
 
 
-        if(((a-1) % 4 == 0 or a == 1) and a){
+        if(((a-1) % 5 == 0 or a == 1) and a){
            // labelcant.append(v + "\n");
             ui->listcant->addItem(v);
+            req = v.toInt();
         }
-        if(((a-2) % 4 == 0 or a == 2) and a){
+        if(((a-2) % 5 == 0 or a == 2) and a){
             labelproducto.append(v);
             //ui->listdesc->addItem(v);
         }
-        if(((a-3) % 4 == 0 or a == 3) and a){
+        if(((a-3) % 5 == 0 or a == 3) and a){
             labelproducto.append(v);
+
             ui->listdesc->addItem(v);
         }
+        if(((a-4) % 5 == 0 or a == 4) and a){
+            ui->list_stock->addItem(v);
+            if(v.toInt() > req and !hayreq and !senecesitareq){
+                ui->lbl_constock->show();
+                ui->lbl_reqsin->hide();
+            }else{
+                if(!hayreq){
+                    senecesitareq = true;
+                    ui->lbl_reqsin->show();
+                    ui->lbl_constock->hide();
+                }
+           }
+        }
+
+
+
 
 
 
@@ -336,6 +352,7 @@ void MainWindow::on_listWidget_currentItemChanged()
 {
     ui->listdesc->clear();
     ui->listcant->clear();
+    ui->list_stock->clear();
     QString empresa = ui->listWidget->currentItem()->text();
     ui->lbl_empresa->setText(empresa.remove("[NUEVO]"));
     Busca_Escribe(ui->listWidget->currentRow());
@@ -353,6 +370,7 @@ void MainWindow::on_listdesc_currentRowChanged(int currentRow)
 }
 
 void MainWindow::funcionActivacionTimer(){
+    int r = ui->listWidget->currentRow();
     ui->listWidget->blockSignals(true);
     ui->listWidget->clear();
     ui->listWidget->blockSignals(false);
@@ -361,15 +379,20 @@ void MainWindow::funcionActivacionTimer(){
     popular_pedidos();
     popular_items();
     ui->lbl_cantpedidos->setText("Pedidos Pendientes: " + QString::number(ui->listWidget->count()));
-    int max = ui->listWidget->count();
 
-    rowin++;
-    if(rowin >= max)
-        rowin = 0;
-    if(scrollear)
+
+    if(scrollear){
+
+        int max = ui->listWidget->count();
         ui->listWidget->setCurrentRow(rowin);
-
-
+        rowin++;
+        if(rowin >= max){
+            rowin = 0;
+            ui->listWidget->setCurrentRow(0);
+        }
+}else{
+        ui->listWidget->setCurrentRow(r);
+    }
 
 
 }
@@ -390,7 +413,7 @@ void MainWindow::on_check_visto_clicked()
     QString itemactual = ui->listWidget->currentItem()->text();
 
     if(itemactual.contains("[NUEVO]")){
-        ui->listWidget->currentItem()->setText(itemactual.remove("[NUEVO]"));
+        ui->listWidget->currentItem()->setText(itemactual.remove("[NUEVO] "));
         if(pedido[ui->listWidget->currentRow()][PEDIDOPRIORIDAD].toInt() != 3)
             ui->listWidget->currentItem()->setTextColor(QColor(0,0,0));
     }

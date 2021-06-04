@@ -88,7 +88,7 @@ public:
         label_7->setFont(font);
         label_8 = new QLabel(ayuda);
         label_8->setObjectName(QString::fromUtf8("label_8"));
-        label_8->setGeometry(QRect(40, 310, 41, 41));
+        label_8->setGeometry(QRect(40, 310, 51, 51));
         label_8->setPixmap(QPixmap(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/pago_no_existente.png")));
         label_8->setScaledContents(true);
         label_9 = new QLabel(ayuda);
