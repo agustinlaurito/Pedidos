@@ -19,6 +19,7 @@
 #include <QPixmap>
 #include <QTimer>
 #include <QSettings>
+#include <QLabel>
 
 
 QT_BEGIN_NAMESPACE
@@ -43,6 +44,8 @@ public:
 
     void burocratizar(int x);
 
+    void mostrar_info(QString texto);
+
 private slots:
     void on_listWidget_currentItemChanged();
     
@@ -60,6 +63,10 @@ private slots:
     void on_btn_cambiotab_clicked();
 
     void on_btn_help_clicked();
+
+    void on_btn_advertencia_clicked();
+
+    void on_lineEdit_editingFinished();
 
 private:
     Ui::MainWindow *ui;

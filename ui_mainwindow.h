@@ -15,6 +15,7 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
@@ -62,6 +63,9 @@ public:
     QListWidget *list_stock;
     QLabel *cantidad_2;
     QLabel *lbl_constock;
+    QPushButton *btn_advertencia;
+    QLineEdit *lineEdit;
+    QLabel *cantidad_3;
     QCheckBox *check_scroll;
     QLabel *lbl_cantpedidos;
     QPushButton *btn_help;
@@ -198,7 +202,7 @@ public:
         lbl_requerimiento->setStyleSheet(QString::fromUtf8("border:0;"));
         cantidad = new QLabel(groupBox);
         cantidad->setObjectName(QString::fromUtf8("cantidad"));
-        cantidad->setGeometry(QRect(20, 320, 61, 31));
+        cantidad->setGeometry(QRect(20, 370, 61, 31));
         QFont font5;
         font5.setFamily(QString::fromUtf8("Quicksand"));
         font5.setPointSize(20);
@@ -208,14 +212,14 @@ public:
         cantidad->setStyleSheet(QString::fromUtf8("border:0;"));
         descripcion = new QLabel(groupBox);
         descripcion->setObjectName(QString::fromUtf8("descripcion"));
-        descripcion->setGeometry(QRect(100, 310, 921, 51));
+        descripcion->setGeometry(QRect(100, 360, 921, 51));
         descripcion->setFont(font5);
         descripcion->setStyleSheet(QString::fromUtf8("border:0;"));
         descripcion->setFrameShape(QFrame::Box);
         descripcion->setAlignment(Qt::AlignCenter);
         listdesc = new QListWidget(groupBox);
         listdesc->setObjectName(QString::fromUtf8("listdesc"));
-        listdesc->setGeometry(QRect(100, 360, 921, 561));
+        listdesc->setGeometry(QRect(100, 420, 911, 501));
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -256,7 +260,7 @@ public:
         label_pic_entrega->setScaledContents(true);
         listcant = new QListWidget(groupBox);
         listcant->setObjectName(QString::fromUtf8("listcant"));
-        listcant->setGeometry(QRect(20, 360, 61, 561));
+        listcant->setGeometry(QRect(10, 420, 71, 501));
         listcant->setFont(font6);
         listcant->setStyleSheet(QString::fromUtf8("background:#F2F2F2;\n"
 "border-radius: 10px;\n"
@@ -343,7 +347,7 @@ public:
 "}"));
         list_stock = new QListWidget(groupBox);
         list_stock->setObjectName(QString::fromUtf8("list_stock"));
-        list_stock->setGeometry(QRect(1040, 360, 61, 561));
+        list_stock->setGeometry(QRect(1030, 420, 71, 501));
         list_stock->setFont(font6);
         list_stock->setStyleSheet(QString::fromUtf8("background:#F2F2F2;\n"
 "border-radius: 10px;\n"
@@ -354,7 +358,7 @@ public:
         list_stock->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
         cantidad_2 = new QLabel(groupBox);
         cantidad_2->setObjectName(QString::fromUtf8("cantidad_2"));
-        cantidad_2->setGeometry(QRect(1030, 320, 71, 31));
+        cantidad_2->setGeometry(QRect(1030, 370, 71, 31));
         cantidad_2->setFont(font5);
         cantidad_2->setStyleSheet(QString::fromUtf8("border:0;"));
         lbl_constock = new QLabel(groupBox);
@@ -362,6 +366,32 @@ public:
         lbl_constock->setGeometry(QRect(420, 150, 51, 41));
         lbl_constock->setPixmap(QPixmap(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/Sin t\303\255tulo.png")));
         lbl_constock->setScaledContents(true);
+        btn_advertencia = new QPushButton(groupBox);
+        btn_advertencia->setObjectName(QString::fromUtf8("btn_advertencia"));
+        btn_advertencia->setGeometry(QRect(620, 140, 71, 61));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/warning.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_advertencia->setIcon(icon1);
+        btn_advertencia->setIconSize(QSize(500, 70));
+        btn_advertencia->setFlat(true);
+        lineEdit = new QLineEdit(groupBox);
+        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
+        lineEdit->setGeometry(QRect(80, 330, 1021, 41));
+        QFont font9;
+        font9.setFamily(QString::fromUtf8("Quicksand"));
+        font9.setPointSize(16);
+        font9.setBold(true);
+        font9.setWeight(75);
+        lineEdit->setFont(font9);
+        lineEdit->setStyleSheet(QString::fromUtf8("background: #F2F2F2;\n"
+"padding: 5px;\n"
+"font-weight: bold;\n"
+""));
+        cantidad_3 = new QLabel(groupBox);
+        cantidad_3->setObjectName(QString::fromUtf8("cantidad_3"));
+        cantidad_3->setGeometry(QRect(10, 330, 71, 41));
+        cantidad_3->setFont(font9);
+        cantidad_3->setStyleSheet(QString::fromUtf8("border:0;"));
         check_scroll = new QCheckBox(Pedidos);
         check_scroll->setObjectName(QString::fromUtf8("check_scroll"));
         check_scroll->setGeometry(QRect(1550, 990, 41, 31));
@@ -382,9 +412,9 @@ public:
         btn_help = new QPushButton(Pedidos);
         btn_help->setObjectName(QString::fromUtf8("btn_help"));
         btn_help->setGeometry(QRect(1610, 980, 51, 51));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/help.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_help->setIcon(icon1);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/help.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_help->setIcon(icon2);
         btn_help->setIconSize(QSize(500, 36));
         btn_help->setFlat(true);
         tabWidget->addTab(Pedidos, QString());
@@ -433,6 +463,9 @@ public:
         check_remitir->setText(QString());
         cantidad_2->setText(QApplication::translate("MainWindow", "Stock", nullptr));
         lbl_constock->setText(QString());
+        btn_advertencia->setText(QString());
+        lineEdit->setText(QString());
+        cantidad_3->setText(QApplication::translate("MainWindow", "Notas:", nullptr));
         check_scroll->setText(QString());
         lbl_cantpedidos->setText(QApplication::translate("MainWindow", "Pedidos Pendientes:", nullptr));
         btn_help->setText(QString());

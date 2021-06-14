@@ -380,6 +380,8 @@ debug/moc_mainwindow.cpp: mainwindow.h \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/qbasictimer.h \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/QSettings \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/qsettings.h \
+		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QLabel \
+		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qlabel.h \
 		debug/moc_predefs.h \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/bin/moc.exe
 	C:\Programas\Qt\Qt5.12.10\5.12.10\mingw73_32\bin\moc.exe $(DEFINES) --include C:/Users/Acquatron-PC/Documents/Pedidos/debug/moc_predefs.h -IC:/Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/mkspecs/win32-g++ -IC:/Users/Acquatron-PC/Documents/Pedidos -IC:/Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include -IC:/Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets -IC:/Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtGui -IC:/Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtANGLE -IC:/Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtSql -IC:/Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore -IC:/Programas/Qt/Qt5.12.10/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++ -IC:/Programas/Qt/Qt5.12.10/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++/i686-w64-mingw32 -IC:/Programas/Qt/Qt5.12.10/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include/c++/backward -IC:/Programas/Qt/Qt5.12.10/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include -IC:/Programas/Qt/Qt5.12.10/Tools/mingw730_32/lib/gcc/i686-w64-mingw32/7.3.0/include-fixed -IC:/Programas/Qt/Qt5.12.10/Tools/mingw730_32/i686-w64-mingw32/include mainwindow.h -o debug\moc_mainwindow.cpp
@@ -679,6 +681,8 @@ debug/main.o: main.cpp mainwindow.h \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/qbasictimer.h \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/QSettings \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/qsettings.h \
+		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QLabel \
+		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qlabel.h \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QApplication \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qapplication.h \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/qcoreapplication.h \
@@ -848,10 +852,14 @@ debug/mainwindow.o: mainwindow.cpp mainwindow.h \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/qbasictimer.h \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/QSettings \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtCore/qsettings.h \
+		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QLabel \
+		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qlabel.h \
 		ui_mainwindow.h \
 		ayuda.h \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QDialog \
-		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qdialog.h
+		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qdialog.h \
+		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/QMessageBox \
+		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/include/QtWidgets/qmessagebox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\mainwindow.o mainwindow.cpp
 
 debug/moc_ayuda.o: debug/moc_ayuda.cpp 
