@@ -248,8 +248,10 @@ Makefile: Pedidos.pro ../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/mksp
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/mkspecs/features/lex.prf \
 		Pedidos.pro \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/Qt5Widgets.prl \
+		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/Qt5Multimedia.prl \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/Qt5Gui.prl \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/Qt5Sql.prl \
+		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/Qt5Network.prl \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/Qt5Core.prl \
 		../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/qtmain.prl
 	$(QMAKE) -o Makefile Pedidos.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
@@ -438,8 +440,10 @@ Makefile: Pedidos.pro ../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/mksp
 ../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/mkspecs/features/lex.prf:
 Pedidos.pro:
 ../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/Qt5Widgets.prl:
+../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/Qt5Multimedia.prl:
 ../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/Qt5Gui.prl:
 ../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/Qt5Sql.prl:
+../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/Qt5Network.prl:
 ../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/Qt5Core.prl:
 ../../../../Programas/Qt/Qt5.12.10/5.12.10/mingw73_32/lib/qtmain.prl:
 qmake: FORCE

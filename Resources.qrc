@@ -1,0 +1,69 @@
+<RCC>
+    <qresource prefix="/Main">
+        <file>Resources/Icons/crosscheck.png</file>
+        <file>Resources/Icons/pago_check.png</file>
+        <file>Resources/Icons/pago_no_existente.png</file>
+        <file>Resources/Icons/pago_pendien.png</file>
+        <file>Resources/Icons/pago_rechazdo.png</file>
+        <file>Resources/Icons/REQcheck_PAGOcheck.png</file>
+        <file>Resources/Icons/REQcheck_PAGOinexistente.png</file>
+        <file>Resources/Icons/REQcheck_PAGOpendiente.png</file>
+        <file>Resources/Icons/REQcheck_PAGOrechazado.png</file>
+        <file>Resources/Icons/REQinexistente_PAGOcheck.png</file>
+        <file>Resources/Icons/REQinexistente_PAGOinexistente.png</file>
+        <file>Resources/Icons/REQinexistente_PAGOpendiente.png</file>
+        <file>Resources/Icons/REQinexistente_PAGOrechazado.png</file>
+        <file>Resources/Icons/REQpendiente_PAGOcheck.pdn</file>
+        <file>Resources/Icons/REQpendiente_PAGOcheck.png</file>
+        <file>Resources/Icons/REQpendiente_PAGOinexistente.png</file>
+        <file>Resources/Icons/REQpendiente_PAGOpendiente.png</file>
+        <file>Resources/Icons/REQpendiente_PAGOrechazado.png</file>
+        <file>Resources/Icons/Sin título.png</file>
+        <file>Resources/Icons/stock_PAGOcheck.png</file>
+        <file>Resources/Icons/stock_PAGOinexistente.png</file>
+        <file>Resources/Icons/stock_PAGOpendiente.png</file>
+        <file>Resources/Icons/stock_PAGOrechazado.pdn</file>
+        <file>Resources/Icons/stock_PAGOrechazado.png</file>
+        <file>Resources/remitos/envio_pagocheck.png</file>
+        <file>Resources/remitos/envio_pagoinexistente.png</file>
+        <file>Resources/remitos/envio_pagopendiente.png</file>
+        <file>Resources/remitos/envio_pagorechazado.png</file>
+        <file>Resources/remitos/retira_pagocheck.png</file>
+        <file>Resources/remitos/retira_pagoinexistente.png</file>
+        <file>Resources/remitos/retira_pagopendiente.png</file>
+        <file>Resources/remitos/retira_pagorechazado.png</file>
+        <file>Resources/acqualogo.png</file>
+        <file>Resources/acquatron con nombre.JPG</file>
+        <file>Resources/advertencia.png</file>
+        <file>Resources/bill.png</file>
+        <file>Resources/checkbox.png</file>
+        <file>Resources/checkboxcheck.png</file>
+        <file>Resources/checkboxempty.png</file>
+        <file>Resources/cheerful-527.mp3</file>
+        <file>Resources/crosscheck.png</file>
+        <file>Resources/delivery-box.png</file>
+        <file>Resources/done-for-you-612.mp3</file>
+        <file>Resources/exclamation-mark.png</file>
+        <file>Resources/help.png</file>
+        <file>Resources/informacion.png</file>
+        <file>Resources/logo.png</file>
+        <file>Resources/logonotas.png</file>
+        <file>Resources/pago_check.png</file>
+        <file>Resources/pago_no_existente.png</file>
+        <file>Resources/pago_pendien.png</file>
+        <file>Resources/pago_rechazdo.png</file>
+        <file>Resources/pendiente.png</file>
+        <file>Resources/post-it.png</file>
+        <file>Resources/product.png</file>
+        <file>Resources/question.png</file>
+        <file>Resources/right-arrow (2).png</file>
+        <file>Resources/Sin título.pdn</file>
+        <file>Resources/Sin título.png</file>
+        <file>Resources/sinrequerimiento.png</file>
+        <file>Resources/Splash.png</file>
+        <file>Resources/truck.png</file>
+        <file>Resources/verificado.png</file>
+        <file>Resources/warehouse.png</file>
+        <file>Resources/warning.png</file>
+    </qresource>
+</RCC>
