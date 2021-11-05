@@ -1,5 +1,5 @@
 # Pedidos
-Small program to organize production teams.
+Software to organize production teams.
 
 The main function of the program is to show data from the ERP Software database in a user-friendly way. 
 
