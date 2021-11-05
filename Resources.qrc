@@ -65,5 +65,6 @@
         <file>Resources/verificado.png</file>
         <file>Resources/warehouse.png</file>
         <file>Resources/warning.png</file>
+        <file>Resources/loading.png</file>
     </qresource>
 </RCC>

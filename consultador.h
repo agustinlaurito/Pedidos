@@ -45,7 +45,9 @@ public:
 
     void Set_GroupBy(int in);
 
-    void complete_requerimiento(QString num);
+    QSqlQuery bring_items(QString num);
+
+    bool testconnection();
 
 
 

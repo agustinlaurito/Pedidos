@@ -74,9 +74,7 @@ public:
     QCheckBox *check_scroll;
     QPushButton *btn_help;
     QGroupBox *groupBox_2;
-    QComboBox *lista_consultas;
     QComboBox *lista_consultas_agrupar;
-    QLabel *label;
     QLabel *label_2;
     QPushButton *btn_cambio;
     QLabel *descripcion_8;
@@ -170,7 +168,10 @@ public:
         groupBox = new QGroupBox(Pedidos);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
         groupBox->setGeometry(QRect(820, 40, 1121, 931));
-        groupBox->setStyleSheet(QString::fromUtf8("border: 0px;"));
+        groupBox->setStyleSheet(QString::fromUtf8("\n"
+"QGroupBox{\n"
+"border-radius: 10px;\n"
+"}"));
         A_Grupo2 = new QGroupBox(groupBox);
         A_Grupo2->setObjectName(QString::fromUtf8("A_Grupo2"));
         A_Grupo2->setGeometry(QRect(10, 20, 1211, 101));
@@ -400,6 +401,8 @@ public:
 "\n"
 "border-radius: 10px;\n"
 ""));
+        list_codigo->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        list_codigo->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         descripcion_2 = new QLabel(groupBox);
         descripcion_2->setObjectName(QString::fromUtf8("descripcion_2"));
         descripcion_2->setGeometry(QRect(80, 370, 151, 41));
@@ -461,41 +464,29 @@ public:
         groupBox_2->setStyleSheet(QString::fromUtf8("background: #F2F2F2;\n"
 "border-radius: 10px;\n"
 ""));
-        lista_consultas = new QComboBox(groupBox_2);
-        lista_consultas->addItem(QString());
-        lista_consultas->addItem(QString());
-        lista_consultas->addItem(QString());
-        lista_consultas->setObjectName(QString::fromUtf8("lista_consultas"));
-        lista_consultas->setGeometry(QRect(140, 10, 231, 22));
-        QFont font9;
-        font9.setFamily(QString::fromUtf8("Quicksand"));
-        font9.setPointSize(12);
-        font9.setBold(false);
-        font9.setWeight(50);
-        lista_consultas->setFont(font9);
-        lista_consultas->setStyleSheet(QString::fromUtf8(""));
-        lista_consultas->setFrame(true);
         lista_consultas_agrupar = new QComboBox(groupBox_2);
         lista_consultas_agrupar->addItem(QString());
         lista_consultas_agrupar->addItem(QString());
         lista_consultas_agrupar->addItem(QString());
         lista_consultas_agrupar->addItem(QString());
+        lista_consultas_agrupar->addItem(QString());
         lista_consultas_agrupar->setObjectName(QString::fromUtf8("lista_consultas_agrupar"));
-        lista_consultas_agrupar->setGeometry(QRect(520, 10, 241, 22));
+        lista_consultas_agrupar->setGeometry(QRect(120, 10, 241, 22));
+        QFont font9;
+        font9.setFamily(QString::fromUtf8("Quicksand"));
+        font9.setPointSize(12);
+        font9.setBold(false);
+        font9.setWeight(50);
         lista_consultas_agrupar->setFont(font9);
         lista_consultas_agrupar->setStyleSheet(QString::fromUtf8(""));
-        label = new QLabel(groupBox_2);
-        label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(20, 10, 111, 21));
+        label_2 = new QLabel(groupBox_2);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+        label_2->setGeometry(QRect(20, 10, 91, 21));
         QFont font10;
         font10.setFamily(QString::fromUtf8("Quicksand"));
         font10.setPointSize(12);
         font10.setBold(true);
         font10.setWeight(75);
-        label->setFont(font10);
-        label_2 = new QLabel(groupBox_2);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(430, 10, 91, 21));
         label_2->setFont(font10);
         btn_cambio = new QPushButton(Pedidos);
         btn_cambio->setObjectName(QString::fromUtf8("btn_cambio"));
@@ -734,7 +725,6 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
-        lista_consultas->setCurrentIndex(1);
         lista_consultas_agrupar->setCurrentIndex(0);
 
 
@@ -780,16 +770,12 @@ public:
         check_scroll->setText(QString());
         btn_help->setText(QString());
         groupBox_2->setTitle(QString());
-        lista_consultas->setItemText(0, QApplication::translate("MainWindow", "Estado Requerimiento", nullptr));
-        lista_consultas->setItemText(1, QApplication::translate("MainWindow", "Fecha de Ingreso", nullptr));
-        lista_consultas->setItemText(2, QApplication::translate("MainWindow", "Nombre", nullptr));
-
         lista_consultas_agrupar->setItemText(0, QApplication::translate("MainWindow", "Sin Filtro", nullptr));
         lista_consultas_agrupar->setItemText(1, QApplication::translate("MainWindow", "Requerimientos Completos", nullptr));
         lista_consultas_agrupar->setItemText(2, QApplication::translate("MainWindow", "Requerimientos Pendientes", nullptr));
         lista_consultas_agrupar->setItemText(3, QApplication::translate("MainWindow", "Sin Requerimientos", nullptr));
+        lista_consultas_agrupar->setItemText(4, QApplication::translate("MainWindow", "Pedidos Listos", nullptr));
 
-        label->setText(QApplication::translate("MainWindow", "Ordernar por:", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "Filtrar por:", nullptr));
         btn_cambio->setText(QString());
         descripcion_8->setText(QApplication::translate("MainWindow", "Remitos", nullptr));

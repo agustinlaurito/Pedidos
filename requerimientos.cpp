@@ -29,8 +29,6 @@ void Requerimientos::llenar_lista(){
     while(consulta.next()){
         QListWidgetItem *item = new QListWidgetItem;
         item->setText(consulta.value(0).toString() + separador + consulta.value(1).toString());
-        item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-        item->setCheckState(Qt::Unchecked);
         ui->list_requerimientos->insertItem(consulta.at(),item);
     }
 }

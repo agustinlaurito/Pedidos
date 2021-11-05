@@ -109,7 +109,6 @@
        <string notr="true">QListWidget { outline: none; border:0px solid gray; color: black;background: #F2F2F2;;border-radius: 10px;padding:10px;}
 QListWidget::Item { width: 50px; height: 50px; }
 QListWidget::Item:hover { background: #2FA9E0; color: white;border-radius:0px; }
-QListWidget::item:selected { background: #e7e7e7;color: #30A2FF; }
 QListWidget::QScrollBar:vertical {              
             border: none;
             background:white;
@@ -138,7 +137,10 @@ QListWidget::QScrollBar:vertical {
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border: 0px;</string>
+       <string notr="true">
+QGroupBox{
+border-radius: 10px;
+}</string>
       </property>
       <property name="title">
        <string/>
@@ -844,6 +846,12 @@ border:0px;
 border-radius: 10px;
 </string>
        </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
       </widget>
       <widget class="QLabel" name="descripcion_2">
        <property name="geometry">
@@ -1039,52 +1047,10 @@ border-radius: 10px;
       <property name="title">
        <string/>
       </property>
-      <widget class="QComboBox" name="lista_consultas">
-       <property name="geometry">
-        <rect>
-         <x>140</x>
-         <y>10</y>
-         <width>231</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Quicksand</family>
-         <pointsize>12</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="currentIndex">
-        <number>1</number>
-       </property>
-       <property name="frame">
-        <bool>true</bool>
-       </property>
-       <item>
-        <property name="text">
-         <string>Estado Requerimiento</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Fecha de Ingreso</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Nombre</string>
-        </property>
-       </item>
-      </widget>
       <widget class="QComboBox" name="lista_consultas_agrupar">
        <property name="geometry">
         <rect>
-         <x>520</x>
+         <x>120</x>
          <y>10</y>
          <width>241</width>
          <height>22</height>
@@ -1124,32 +1090,16 @@ border-radius: 10px;
          <string>Sin Requerimientos</string>
         </property>
        </item>
-      </widget>
-      <widget class="QLabel" name="label">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>10</y>
-         <width>111</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Quicksand</family>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Ordernar por:</string>
-       </property>
+       <item>
+        <property name="text">
+         <string>Pedidos Listos</string>
+        </property>
+       </item>
       </widget>
       <widget class="QLabel" name="label_2">
        <property name="geometry">
         <rect>
-         <x>430</x>
+         <x>20</x>
          <y>10</y>
          <width>91</width>
          <height>21</height>

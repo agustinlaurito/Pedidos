@@ -4,25 +4,19 @@
 #include "QMessageBox"
 
 
-#define NUMERO 0
-#define EMPRESA 1
-#define REQUERIMIENTO 2
-#define ENTREGA 3
-#define CANTIDAD 1
-#define ITEM_CODIGO 2
-#define ITEM_DESCRIPCION 3
-#define DIRECCION 4
-#define REQUERIMIENTOESTADO 3
-#define FACTURANUMERO 6
-#define ESTADOFACTURA 7
-#define PEDIDOPRIORIDAD 8
-#define PEDIDOADVERTENCIA 9
-#define PEDIDOFECHA 11
+const unsigned int NUMERO = 0;
+const unsigned int EMPRESA = 1;
+const unsigned int REQUERIMIENTO = 2;
+const unsigned int REQUERIMIENTOESTADO = 3;
+const unsigned int FACTURANUMERO = 6;
+const unsigned int ESTADOFACTURA = 7;
+const unsigned int PEDIDOPRIORIDAD = 8;
+const unsigned int PEDIDOADVERTENCIA = 9;
+const unsigned int PEDIDOFECHA = 11;
 
 
 int numero_fila = 0;
 QStringList pedido[1000];
-QStringList items[100];
 QStringList adicional[100];
 int rowin = 0;
 bool scrollear = true;
@@ -51,16 +45,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     Abrir_ODBC();
-    popular_items();
     popular_pedidos();
-    popular_items();
     QMediaPlayer *alarma = new QMediaPlayer;
     alarma->play();
 
     ui->listWidget->setCurrentRow(0);
     QTimer *cronometro=new QTimer(this);
     connect(cronometro, SIGNAL(timeout()), this, SLOT(funcionActivacionTimer()));
-    cronometro->start(12500);
+    cronometro->start(240000);
 
     ui->listWidget->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->listWidget->verticalScrollBar()->setStyleSheet("QScrollBar:vertical {border: none;background:white;width:3px;margin: 0px 0px 0px 0px;}QScrollBar::handle:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130), stop:1 rgb(32, 47, 130));min-height: 0px;}QScrollBar::add-line:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0 rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));height: 0px;subcontrol-position: bottom;subcontrol-origin: margin;}QScrollBar::sub-line:vertical {background: qlineargradient(x1:0, y1:0, x2:1, y2:0,stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));height: 0 px;subcontrol-position: top;subcontrol-origin: margin;}");
@@ -110,6 +102,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->list_codigo->verticalScrollBar(), &QScrollBar::valueChanged,
     ui->list_stock->verticalScrollBar(), &QScrollBar::setValue);
 // -------------------------------------------------------------------------------------//
+    // ------- System Notifications Configuration ------- //
+        mSystemTrayIcon = new QSystemTrayIcon(this);      //
+        mSystemTrayIcon->setIcon(QIcon(":/Main/Resources/advertencia.png"));
+        mSystemTrayIcon->setVisible(true);                //
+        mSystemTrayIcon->setToolTip("Pedidos");    //
+    // -------------------------------------------------- //
 
     ui->list_stock->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->list_desc->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -123,23 +121,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::Abrir_ODBC(){
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC3");
     db.setHostName(ODBC_SERVIDOR);
     db.setDatabaseName(ODBC_CONNECTSTRING);
     db.setPassword(ODBC_PASSWORD);
     db.setUserName(ODBC_USERNAME);
 
-    if (db.open())
-    {
-         qDebug() << "Conectado!";
-    }
-    else
-    {
-         //qDebug() << db.lastError().text();
-    }
+   db.open() ? qDebug() << "Enhorabuena" : qDebug() << "Enhoramala";
 
 }
-
 
 
 MainWindow::~MainWindow()
@@ -151,14 +140,7 @@ void MainWindow::burocratizar(int x){   //Funcion encargada de formatear los ite
 
 //------------------------------- Chequeo de si el pedido es nuevo y si fue visto -----------------------------------------//
 
-    int requerimiento = pedido[x][REQUERIMIENTO].toInt();
-    //qDebug() << requerimiento;
 
-    int estadofactura = pedido[x][ESTADOFACTURA].toInt();
-    int requerimientoestado = pedido[x][REQUERIMIENTOESTADO].toInt();
-
-    //qDebug() << requerimiento << requerimientoestado;
-    int facturanumero = pedido[x][FACTURANUMERO].toInt();
     QString pedidotexto = pedido[x][PEDIDOFECHA] + " • " + pedido[x][NUMERO] + " • " + pedido[x][EMPRESA];
 
     QListWidgetItem *item = new QListWidgetItem;
@@ -181,59 +163,17 @@ void MainWindow::burocratizar(int x){   //Funcion encargada de formatear los ite
             }
         }
     }
+    if(ui->lista_consultas_agrupar->currentIndex() == 3 and ini->value("/" + pedido[x][NUMERO] + "/check_remitir").toBool())
+        return;
+
+    if(ui->lista_consultas_agrupar->currentIndex() == 4 and !ini->value("/" + pedido[x][NUMERO] + "/check_remitir").toBool())
+        return;
 
     item->setToolTip(item->text());
 
-//----------------------------------- Habiendo seteado el texto y color, procedo a agregarle el icono de estado del requerimiento y de la factura ---------------//
+    item->setIcon(QIcon(":/Main/Resources/loading.png"));
+    //ui->listWidget->setIconSize(QSize(36,36));
 
- bool senecesitareq = !hay_stock(pedido[x][0].toInt());
-
-
-    if(requerimiento == 0 or requerimientoestado == 2){
-
-            if(!facturanumero and !senecesitareq)
-                item->setIcon(QIcon(":/Main/Resources/Icons/stock_PAGOinexistente.png"));
-            if(estadofactura > 1 and !senecesitareq)
-                item->setIcon(QIcon(":/Main/Resources/Icons/stock_PAGOrechazado.png"));
-            if((estadofactura == 1 and !senecesitareq) or (!senecesitareq and !pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("efectivo",Qt::CaseInsensitive) and !pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("transferencia",Qt::CaseInsensitive) and !pedido[x][10].isEmpty() and !pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive)))
-                item->setIcon(QIcon(":/Main/Resources/Icons/stock_PAGOcheck.png"));
-            if(estadofactura == 0 and facturanumero and !senecesitareq)
-                item->setIcon(QIcon(":/Main/Resources/Icons/stock_PAGOpendiente.png"));
-
-
-        if(senecesitareq){
-            if(!facturanumero and senecesitareq)
-                item->setIcon(QIcon(":/Main/Resources/Icons/REQinexistente_PAGOinexistente.png"));
-            if(estadofactura > 1 and senecesitareq)
-                item->setIcon(QIcon(":/Main/Resources/Icons/REQinexistente_PAGOrechazado.png"));
-            if((estadofactura == 0 and facturanumero and senecesitareq) or pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive))
-                item->setIcon(QIcon(":/Main/Resources/Icons/REQinexistente_PAGOpendiente.png"));
-            if(estadofactura == 1 or (senecesitareq and !pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("efectivo",Qt::CaseInsensitive) and !pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("transferencia",Qt::CaseInsensitive) and !pedido[x][10].isEmpty() and !pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive)))
-                item->setIcon(QIcon(":/Main/Resources/Icons/REQinexistente_PAGOcheck.png"));
-        }
-    }
-    if(requerimientoestado == 0 and requerimiento){
-        if(!facturanumero)
-            item->setIcon(QIcon(":/Main/Resources/Icons/REQpendiente_PAGOinexistente.png"));
-        if(estadofactura > 1)
-            item->setIcon(QIcon(":/Main/Resources/Icons/REQpendiente_PAGOrechazado.png"));
-        if((estadofactura == 0 and facturanumero) or pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive))
-            item->setIcon(QIcon(":/Main/Resources/Icons/REQpendiente_PAGOpendiente.png"));
-        if(estadofactura == 1 or (!pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("efectivo",Qt::CaseInsensitive) and !pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("transferencia",Qt::CaseInsensitive) and !pedido[x][10].isEmpty() and !pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive)))
-            item->setIcon(QIcon(":/Main/Resources/Icons/REQpendiente_PAGOcheck.png"));
-    }
-    if(requerimientoestado == 1){
-
-        //qDebug() << "hola";
-        if(!facturanumero)
-            item->setIcon(QIcon(":/Main/Resources/Icons/REQcheck_PAGOinexistente.png"));
-        if(estadofactura > 1)
-            item->setIcon(QIcon(":/Main/Resources/Icons/REQcheck_PAGOrechazado.png"));
-        if((estadofactura == 0 and facturanumero) or pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive))
-            item->setIcon(QIcon(":/Main/Resources/Icons/REQcheck_PAGOpendiente.png"));
-        if(estadofactura == 1 or (!pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("efectivo",Qt::CaseInsensitive) and !pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("transferencia",Qt::CaseInsensitive) and !pedido[x][10].isEmpty() and !pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive)))
-            item->setIcon(QIcon(":/Main/Resources/Icons/REQcheck_PAGOcheck.png"));
-    }
 
 //----------------------------------- Por ultimo, muestro el item y lo seteo como creado ------------------------------------------------------------------------//
     //item->setTextAlignment(Qt::AlignmentFlag::AlignHCenter);
@@ -244,6 +184,9 @@ void MainWindow::burocratizar(int x){   //Funcion encargada de formatear los ite
         item->setTextColor(QColor(255,195,117));
     }
 
+    if(pedido[x][9].contains("impo",Qt::CaseInsensitive))
+        item->setBackgroundColor(QColor(255, 199, 145));
+
     ui->listWidget->addItem(item);
     ini->beginGroup(pedido[x][NUMERO]);
     ini->setValue("Creado",1);
@@ -251,7 +194,6 @@ void MainWindow::burocratizar(int x){   //Funcion encargada de formatear los ite
         ini->setValue("Hora", QDate::currentDate().toString());
     ini->setValue("Prioridad",pedido[x][PEDIDOPRIORIDAD]);
     ini->endGroup();
-
 }
 
 void MainWindow::popular_pedidos(){
@@ -260,71 +202,36 @@ void MainWindow::popular_pedidos(){
     ui->listWidget->clear();
     ui->listWidget->blockSignals(false);
 
-    Consultador consultador;
 
-    consultador.Set_OrderBy(ui->lista_consultas->currentIndex());
+    Consultador consultador;
     consultador.Set_GroupBy(ui->lista_consultas_agrupar->currentIndex());
 
     QSqlQuery consulta = consultador.QueryNormal();
+
+
 
     int iteracion_mayor = 0;
     while(consulta.next()){
 
         int iteracion_menor = 0;
         while(!consulta.value(iteracion_menor).toString().isNull()){
-
             if(iteracion_menor < pedido[iteracion_mayor].size()) //Con este IF limpio la proxima posicion del vector
                 pedido[iteracion_mayor].removeAt(iteracion_menor);
 
             pedido[iteracion_mayor].insert(iteracion_menor,consulta.value(iteracion_menor).toString());
             iteracion_menor++;
-        }
-
+            QCoreApplication::processEvents();
+        }       
         burocratizar(iteracion_mayor);
         iteracion_mayor++;
+
     }
+    formatIcons();
 }
-
-void MainWindow::popular_items(){
-
-    Consultador consultador;
-
-    consultador.Set_OrderBy(ui->lista_consultas->currentIndex());
-    consultador.Set_GroupBy(ui->lista_consultas_agrupar->currentIndex());
-
-    query_pedidositems = consultador.QueryNormal_items();
-
-    int columna = 0,columnacolocada = 0,fila = 0;
-    int pedidoactual = 0,pedanterior = 0;
-    while(query_pedidositems.next()){
-
-        pedidoactual = query_pedidositems.value(0).toInt();
-        columna = 0;
-
-        while(columna < 5){
-
-            items[fila].insert(columnacolocada,query_pedidositems.value(columna).toString());
-            columna++;
-            columnacolocada++;
-            while(int l = items[fila].size() > columnacolocada)
-                items[fila].removeAt(l--);
-        }
-
-        if(query_pedidositems.next()){
-            pedanterior = query_pedidositems.value(0).toInt();
-            query_pedidositems.previous();
-        }
-        if(pedanterior != pedidoactual){
-            columnacolocada = 0;
-            fila++;
-        }
-    }
-}
-
-
 
 void MainWindow::Busca_Escribe(int fila){
-//---------------------------- Pedidos --------------//
+//---------------------------- Pedidos --------------------//
+
    // qDebug() << fila;
     ui->lbl_numero->setText(pedido[fila][NUMERO]);
     ui->lbl_entrega->clear();
@@ -348,17 +255,20 @@ void MainWindow::Busca_Escribe(int fila){
     ui->list_stock->clear();
     ui->list_codigo->clear();
     ui->list_stock->clear();
-
     ui->check_remitir->setCheckable(false);
 
-    ui->lbl_empresa->setText(pedido[fila][EMPRESA]);
 
-    bool haystock = hay_stock(pedido[fila][0].toInt());
+    ui->lbl_empresa->setText("Cargando...");
+    ui->groupBox->setStyleSheet("background:#A0A0A0;QGroupBox{border-radius: 10px;}");
+    QCoreApplication::processEvents();
 
+
+
+    bool stock = haystock(pedido[fila][0]);
     int requerimiento = pedido[fila][REQUERIMIENTO].toInt();
     if(requerimiento == 0){
-        ui->lbl_requerimiento->setText("Sin requerimiento") ;
-        if(haystock){
+        ui->lbl_requerimiento->setText("Sin requerimiento");
+        if(stock){
             ui->lbl_constock->show();
             ui->check_remitir->setCheckable(true);
         }
@@ -366,7 +276,6 @@ void MainWindow::Busca_Escribe(int fila){
             ui->lbl_reqsin->show();
         }
     }else{
-
         ui->lbl_requerimiento->setText("Requerimiento: " + pedido[fila][REQUERIMIENTO]);
         if(pedido[fila][REQUERIMIENTOESTADO].toInt() == 1 ){
             ui->lbl_completo->show();
@@ -374,7 +283,6 @@ void MainWindow::Busca_Escribe(int fila){
         }else if(pedido[fila][REQUERIMIENTOESTADO].toInt() == 2 ){
             ui->lbl_reqsin->show();
             ui->lbl_requerimiento->setText("Requerimiento Anulado");
-
         }else{
             ui->lbl_pendiente->show();
         }
@@ -387,6 +295,7 @@ void MainWindow::Busca_Escribe(int fila){
         if(pedido[fila][5].isEmpty()){
             ui->label_pic_advertencia->show();
             ui->lbl_entrega->setText("Direccion no cargada");
+
          }else{
             ui->lbl_entrega->setText(pedido[fila][5]);
             ui->label_pic_entrega->show();
@@ -415,115 +324,72 @@ void MainWindow::Busca_Escribe(int fila){
     }
 
     if(!pedido[fila][10].contains("contado",Qt::CaseInsensitive) and !pedido[fila][10].contains("efectivo",Qt::CaseInsensitive) and !pedido[fila][10].contains("contado",Qt::CaseInsensitive) and !pedido[fila][10].contains("transferencia",Qt::CaseInsensitive) and !pedido[fila][10].isEmpty()){
-        //ui->lbl_numerofactura->setText("Cuenta Corriente");
-        //ui->lbl_numerofactura->setWordWrap(true);
         ui->lbl_numerofactura->setAlignment(Qt::AlignmentFlag::AlignLeft);
         ui->lbl_numerofactura->setText(pedido[fila][10]);
     }
 
     ui->lbl_numerofactura->setToolTip(ui->lbl_numerofactura->text());
 
-   int prioridad =  pedido[fila][PEDIDOPRIORIDAD].toInt();
-    switch (prioridad){
-        default:
-        case 3: //Prioridad Normal
-            ui->groupBox->setStyleSheet("background:#9fdef5;QGroupBox{border-radius: 10px;}");
-            break;
-        case 1: //Urgente
-            ui->groupBox->setStyleSheet("background:#FF8789;QGroupBox{border-radius: 10px;}");
-            break;
-        case 2: //Prioridad Alta
-             ui->groupBox->setStyleSheet("background:#FFC575;QGroupBox{border-radius: 10px;}");
-            break;
-    }
+
     if(!pedido[fila][PEDIDOADVERTENCIA].isEmpty()){
         ui->btn_advertencia->show();
-        //mostrar_info(pedido[fila][PEDIDOADVERTENCIA]);
         ui->lineEdit->setText(pedido[fila][PEDIDOADVERTENCIA]);
     }
 //------------------------ Items ------------------//
-    int currentrow = fila;
 
-    QString labelcant = "";
-    int a = 0;
-    //qDebug << items[currentrow].size();
+    QCoreApplication::processEvents();
+    Consultador querying;
+    QSqlQuery consulta = querying.bring_items(pedido[fila][NUMERO]);
 
-    int cantespacios = 0;
-    QString cant,codigo,descripcion;
-    float cantidad_stock = 0,cantidad_requerida = 0;
+    while(consulta.next()){
+        QString replacement = "";
+        for(int saltos_linea = consulta.value(2).toString().count("\n");saltos_linea;saltos_linea--)
+            replacement.append("\n");
 
-    foreach(QString v,items[currentrow]){
-        //------ n*A Pendiente de la recta. "n" refiere al numero de items dentro de la consulta. Variando la O.O se obtienen distintos parametros. 0 -> Pedidonro 1 -> Cantidad 2-> Codigo 3-> Descripcion Stock ->4//
+        QListWidgetItem *itemcant = new QListWidgetItem(consulta.value(0).toString().append(replacement));
+        QListWidgetItem *itemcodigo = new QListWidgetItem(consulta.value(1).toString().append(replacement));
+        QListWidgetItem *itemdesc = new QListWidgetItem(consulta.value(2).toString());
+        QListWidgetItem *itemstock = new QListWidgetItem(consulta.value(3).toString().append(replacement));
 
-        if(((a-1) % 5 == 0 or a == 1) and a){
-            cant = v;
-            cantidad_requerida = v.toFloat();
-        }
-        if(((a-2) % 5 == 0 or a == 2) and a){
-            codigo = v;
+        itemcant->setToolTip(itemcant->text());
+        itemcodigo->setToolTip(itemcodigo->text());
+        itemdesc->setToolTip(itemdesc->text());
+        itemstock->setToolTip(itemstock->text());
 
-        }
-        if(((a-3) % 5 == 0 or a == 3) and a){
-            descripcion = "•  ";
-            descripcion.append(v);
-        }
-        if(((a-4) % 5 == 0 or a == 4) and a){
-
-            QListWidgetItem *item_desc = new QListWidgetItem;
-            QListWidgetItem *item_cant = new QListWidgetItem;
-            QListWidgetItem *item_codigo = new QListWidgetItem;
-            QListWidgetItem *item_stock = new QListWidgetItem;
-            item_codigo->setTextAlignment(Qt::AlignLeft);
-            item_cant->setTextAlignment(Qt::AlignCenter);
-            item_stock->setTextAlignment(Qt::AlignCenter);
-            item_desc->setTextAlignment(Qt::AlignLeft);
-
-            QString stock = v;
-            cantidad_stock = v.toFloat();
-            item_desc->setText(descripcion);
-            item_desc->setToolTip(descripcion);
-
-            cantespacios = descripcion.count('\n');
-            for(int m = cantespacios; m > 0;m--){
-                cant.append("\n");
-                codigo.append("\n");
-                stock.append("\n");
+        if(consulta.value(0).toInt() > consulta.value(3).toInt() or itemcodigo->text().contains("Rep")){
+            if(requerimiento){
+                itemcant->setBackgroundColor(QColor("#F69962"));
+                itemcodigo->setBackgroundColor(QColor("#F69962"));
+                itemdesc->setBackgroundColor(QColor("#F69962"));
+                itemstock->setBackgroundColor(QColor("#F69962"));
+            }else{
+                itemcant->setBackgroundColor(QColor("#FFA8B2"));
+                itemcodigo->setBackgroundColor(QColor("#FFA8B2"));
+                itemdesc->setBackgroundColor(QColor("#FFA8B2"));
+                itemstock->setBackgroundColor(QColor("#FFA8B2"));
             }
-
-            item_cant->setText(cant);
-            item_cant->setToolTip(cant);
-            item_codigo->setText(codigo);
-            item_codigo->setToolTip(codigo);
-            item_stock->setText(stock);
-            item_stock->setToolTip(stock);
-
-            if((cantidad_requerida > cantidad_stock) or codigo.contains("Rep")){
-                if(requerimiento){
-                    item_cant->setBackgroundColor(QColor("#FFD484"));
-                    item_codigo->setBackgroundColor(QColor("#FFD484"));
-                    item_desc->setBackgroundColor(QColor("#FFD484"));
-                    item_stock->setBackgroundColor(QColor("#FFD484"));
-                }else{
-                    item_cant->setBackgroundColor(QColor("#FF9696"));
-                    item_codigo->setBackgroundColor(QColor("#FF9696"));
-                    item_desc->setBackgroundColor(QColor("#FF9696"));
-                    item_stock->setBackgroundColor(QColor("#FF9696"));
-                }
-            }/*else{
-                item_cant->setBackgroundColor(QColor("#B5FFB5"));
-                item_codigo->setBackgroundColor(QColor("#B5FFB5"));
-                item_desc->setBackgroundColor(QColor("#B5FFB5"));
-                item_stock->setBackgroundColor(QColor("#B5FFB5"));
-            }*/
-            //#FF9397
-            ui->list_codigo->addItem(item_codigo);
-            ui->list_cant->addItem(item_cant);
-            ui->list_desc->addItem(item_desc);
-            ui->list_stock->addItem(item_stock);
-
         }
-        a++;
+
+        ui->list_cant->addItem(itemcant);
+        ui->list_codigo->addItem(itemcodigo);
+        ui->list_desc->addItem(itemdesc);
+        ui->list_stock->addItem(itemstock);
     }
+    int prioridad =  pedido[fila][PEDIDOPRIORIDAD].toInt();
+     switch (prioridad){
+         default:
+         case 3: //Prioridad Normal
+             ui->groupBox->setStyleSheet("background:#9fdef5;QGroupBox{border-radius: 10px;}");
+             break;
+         case 1: //Urgente
+             ui->groupBox->setStyleSheet("background:#FF8789;QGroupBox{border-radius: 10px;}");
+             break;
+         case 2: //Prioridad Alta
+              ui->groupBox->setStyleSheet("background:#FFC575;QGroupBox{border-radius: 10px;}");
+             break;
+     }
+
+    ui->lbl_empresa->setText(pedido[fila][EMPRESA]);
 
 }
 void MainWindow::on_listWidget_currentItemChanged()
@@ -542,15 +408,32 @@ void MainWindow::on_listWidget_currentItemChanged()
 
 void MainWindow::funcionActivacionTimer(){
 
+    Consultador obj;
+    if(!obj.testconnection()){
+        db.close();
+        db.removeDatabase("ODBC3");
+        Abrir_ODBC();
+        mSystemTrayIcon->showMessage("Error","Error al conectar con la base de datos",mSystemTrayIcon->Information);
+        return;
+    }
     int r = ui->listWidget->currentRow();
     ui->listWidget->blockSignals(true);
     ui->listWidget->clear();
     ui->listWidget->blockSignals(false);
 
+
     popular_pedidos();
-    popular_items();
+
+    if(r > ui->listWidget->count())
+        ui->listWidget->setCurrentRow(ui->listWidget->count());
+    else
+        ui->listWidget->setCurrentRow(r);
 
     ui->lbl_cantpedidos->setText("Pedidos Pendientes: " + QString::number(ui->listWidget->count()));
+
+
+
+
     if(scrollear){
 
         int max = ui->listWidget->count();
@@ -560,11 +443,7 @@ void MainWindow::funcionActivacionTimer(){
             rowin = 0;
             ui->listWidget->setCurrentRow(0);
             }
-        }else{
-        ui->listWidget->setCurrentRow(r);
-    }
-
-
+        }
 
 }
 
@@ -602,7 +481,6 @@ void MainWindow::on_check_visto_clicked()
 void MainWindow::on_check_scroll_toggled(bool checked)
 {
     scrollear = checked;
-
 }
 
 
@@ -616,8 +494,6 @@ void MainWindow::on_btn_help_clicked()
     ayuda Abrir_Ayuda;
     Abrir_Ayuda.setModal(true);
     Abrir_Ayuda.exec();
-
-
 }
 
 void MainWindow::on_btn_requerimiento_clicked()
@@ -644,19 +520,9 @@ void MainWindow::on_lineEdit_editingFinished()
     ini->endGroup();
 }
 
-void MainWindow::on_lista_consultas_currentIndexChanged(int index)
-{
-
-    popular_pedidos();
-    popular_items();
-}
-
 void MainWindow::on_lista_consultas_agrupar_currentIndexChanged(int index)
 {
 
-    if(index)
-        ui->lista_consultas->setCurrentIndex(2);
-    popular_items();
     popular_pedidos();
 }
 
@@ -820,25 +686,95 @@ consulta_items.seek(-1);
 
 }
 
-bool MainWindow::hay_stock(int pedido){
-
-    query_pedidositems.seek(-1);
-    bool hay = true;
-
-    while(query_pedidositems.next()){
-        if(query_pedidositems.value(0).toInt() == pedido){
-            hay = (query_pedidositems.value(1).toInt() <= query_pedidositems.value(4).toInt());
-        }
-        if(!hay)
-            return false;
-    }
-    return hay;
-    query_pedidositems.seek(-1);
-}
 
 void MainWindow::on_btn_volver_clicked()
 {
     ui->tabWidget->setCurrentIndex(0);
 }
 
+bool MainWindow::haystock(QString pedido){
 
+    QString previa = "SELECT pedidositems.cantidad, a_subquery.total  FROM empresas INNER JOIN contactos ON contactos.idempresa=empresas.idempresa INNER JOIN pedidos ON pedidos.idref=contactos.idcontacto LEFT JOIN contactos contactopedido ON contactopedido.IDContacto=pedidos.IDRef LEFT JOIN empresas empresapedido ON empresapedido.IDEmpresa=contactopedido.IDEmpresa LEFT JOIN pedidositems ON pedidositems.idpedido = pedidos.RecID LEFT JOIN productos ON pedidositems.IDProducto=productos.RecID LEFT JOIN ( SELECT SUM(CASE TIPO WHEN 0 THEN (cantidad*Equivalencia) WHEN 1 THEN -(cantidad*Equivalencia) ELSE 0 END) AS `Stock`, SUM(CASE TIPO WHEN 0 THEN (productosstockmovimientos.Cantidad*Equivalencia) WHEN 1 THEN -(productosstockmovimientos.Cantidad*Equivalencia) ELSE 0 END) as TOTAL, SUM(CASE TIPO WHEN 2 THEN (productosstockmovimientos.Cantidad*Equivalencia) WHEN 3 THEN -(productosstockmovimientos.Cantidad*Equivalencia) ELSE 0 END) as TOTALRESERVADO, (SUM(CASE TIPO WHEN 0 THEN (productosstockmovimientos.Cantidad*Equivalencia) WHEN 1 THEN -(productosstockmovimientos.Cantidad*Equivalencia) ELSE 0 END) ) - (SUM(CASE TIPO WHEN 2 THEN (productosstockmovimientos.Cantidad*Equivalencia) WHEN 3 THEN -(productosstockmovimientos.Cantidad*Equivalencia) ELSE 0 END)) as TOTALDISPONIBLE, `productosstockmovimientos`.`idproducto` FROM `productosstockmovimientos` GROUP BY `productosstockmovimientos`.`idproducto`) `a_subquery` ON (`a_subquery`.`idproducto`=`productos`.`recid`) WHERE pedidos.id = " + pedido;
+    QSqlQuery a;
+    a.exec(previa);
+    while(a.next()){
+        if(a.value(0).toInt() > a.value(1).toInt())
+            return false;
+    }
+
+    return true;
+
+    }
+
+void MainWindow::formatIcons(){
+
+    for(int i = 0; !pedido[i].isEmpty();i++){
+        setIcons(i,haystock(pedido[i][0]));
+        QCoreApplication::processEvents();
+    }
+    ui->listWidget->setIconSize(QSize(100,100));
+
+}
+
+void MainWindow::setIcons(int numeroPedido,bool conStock){
+
+    QString str = QString::number(pedido[numeroPedido][0].toInt());
+    QListWidgetItem *item;
+    QList<QListWidgetItem*> list = ui->listWidget->findItems(str,Qt::MatchContains);
+    if(!list.isEmpty())
+        item = ui->listWidget->findItems(str,Qt::MatchContains)[0];
+
+    int x = numeroPedido;
+    int requerimiento = pedido[numeroPedido][REQUERIMIENTO].toInt();
+    int facturanumero = pedido[numeroPedido][FACTURANUMERO].toInt();
+    int requerimientoestado = pedido[numeroPedido][REQUERIMIENTOESTADO].toInt();
+    int estadofactura = pedido[numeroPedido][ESTADOFACTURA].toInt();
+    int senecesitareq = !conStock;
+
+    if(requerimiento == 0 or requerimientoestado == 2){
+
+            if(!facturanumero and !senecesitareq)
+                item->setIcon(QIcon(":/Main/Resources/Icons/stock_PAGOinexistente.png"));
+            if(estadofactura > 1 and !senecesitareq)
+                item->setIcon(QIcon(":/Main/Resources/Icons/stock_PAGOrechazado.png"));
+            if((estadofactura == 1 and !senecesitareq) or (!senecesitareq and !pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("efectivo",Qt::CaseInsensitive) and !pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("transferencia",Qt::CaseInsensitive) and !pedido[x][10].isEmpty() and !pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive)))
+                item->setIcon(QIcon(":/Main/Resources/Icons/stock_PAGOcheck.png"));
+            if(estadofactura == 0 and facturanumero and !senecesitareq)
+                item->setIcon(QIcon(":/Main/Resources/Icons/stock_PAGOpendiente.png"));
+
+
+        if(senecesitareq){
+            if(!facturanumero and senecesitareq)
+                item->setIcon(QIcon(":/Main/Resources/Icons/REQinexistente_PAGOinexistente.png"));
+            if(estadofactura > 1 and senecesitareq)
+                item->setIcon(QIcon(":/Main/Resources/Icons/REQinexistente_PAGOrechazado.png"));
+            if((estadofactura == 0 and facturanumero and senecesitareq) or pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive))
+                item->setIcon(QIcon(":/Main/Resources/Icons/REQinexistente_PAGOpendiente.png"));
+            if(estadofactura == 1 or (senecesitareq and !pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("efectivo",Qt::CaseInsensitive) and !pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("transferencia",Qt::CaseInsensitive) and !pedido[x][10].isEmpty() and !pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive)))
+                item->setIcon(QIcon(":/Main/Resources/Icons/REQinexistente_PAGOcheck.png"));
+        }
+    }
+    if(requerimientoestado == 0 and requerimiento){
+        if(!facturanumero)
+            item->setIcon(QIcon(":/Main/Resources/Icons/REQpendiente_PAGOinexistente.png"));
+        if(estadofactura > 1)
+            item->setIcon(QIcon(":/Main/Resources/Icons/REQpendiente_PAGOrechazado.png"));
+        if((estadofactura == 0 and facturanumero) or pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive))
+            item->setIcon(QIcon(":/Main/Resources/Icons/REQpendiente_PAGOpendiente.png"));
+        if(estadofactura == 1 or (!pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("efectivo",Qt::CaseInsensitive) and !pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("transferencia",Qt::CaseInsensitive) and !pedido[x][10].isEmpty() and !pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive)))
+            item->setIcon(QIcon(":/Main/Resources/Icons/REQpendiente_PAGOcheck.png"));
+    }
+    if(requerimientoestado == 1){
+
+        //qDebug() << "hola";
+        if(!facturanumero)
+            item->setIcon(QIcon(":/Main/Resources/Icons/REQcheck_PAGOinexistente.png"));
+        if(estadofactura > 1)
+            item->setIcon(QIcon(":/Main/Resources/Icons/REQcheck_PAGOrechazado.png"));
+        if((estadofactura == 0 and facturanumero) or pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive))
+            item->setIcon(QIcon(":/Main/Resources/Icons/REQcheck_PAGOpendiente.png"));
+        if(estadofactura == 1 or (!pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("efectivo",Qt::CaseInsensitive) and !pedido[x][10].contains("contado",Qt::CaseInsensitive) and !pedido[x][10].contains("transferencia",Qt::CaseInsensitive) and !pedido[x][10].isEmpty() and !pedido[x][10].contains("factura en el momento",Qt::CaseInsensitive)))
+            item->setIcon(QIcon(":/Main/Resources/Icons/REQcheck_PAGOcheck.png"));
+
+    }
+}

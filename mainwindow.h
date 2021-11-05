@@ -41,6 +41,7 @@ public:
     ~MainWindow();
     QSettings *ini = new QSettings("//servidor/Users/Public/Acquatron Compartida/Andones/Resources/pedidos.ini", QSettings::IniFormat);
     Consultador consultador;
+    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC3");
 
 
     Consultador remitos;
@@ -48,8 +49,6 @@ public:
     QSqlQuery query_remitos;
     QSqlQuery query_remitos_items;
     QSqlQuery query_pedidositems;
-
-    bool hay_stock(int pedido);
 
     void play_alarma();
 
@@ -71,6 +70,12 @@ public:
 
     void popular_remitositems();
 
+    bool haystock(QString pedido);
+
+    void setIcons(int numeroPedido,bool conStock);
+
+    void formatIcons();
+
 private slots:
     void on_listWidget_currentItemChanged();
 
@@ -82,7 +87,6 @@ private slots:
 
     void on_check_scroll_toggled(bool checked);
 
-
     void on_btn_cambiotab_clicked();
 
     void on_btn_help_clicked();
@@ -90,8 +94,6 @@ private slots:
     void on_btn_advertencia_clicked();
 
     void on_lineEdit_editingFinished();
-
-    void on_lista_consultas_currentIndexChanged(int index);
 
     void on_lista_consultas_agrupar_currentIndexChanged(int index);
 
@@ -113,5 +115,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QSystemTrayIcon *mSystemTrayIcon;
 };
 #endif // MAINWINDOW_H
